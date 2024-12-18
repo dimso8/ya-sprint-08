@@ -334,4 +334,6 @@ $RECYCLE.BIN/
 # drow.io back-ups
 *.bkp
 
-# MS Office
+# PosgreDB
+/postgres-keycloak-data
+2024__yandex-architecture-sso.code-workspace
