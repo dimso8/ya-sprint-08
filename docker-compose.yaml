@@ -11,9 +11,14 @@ services:
       - ./postgres-keycloak-data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    networks:
+      - sprint08
+      
   keycloak:
-    image: quay.io/keycloak/keycloak:21.1
+    image: quay.io/keycloak/keycloak:26.0.7
     environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_DB: postgres
@@ -23,20 +28,31 @@ services:
     command: 
       - start-dev
       - --import-realm
+      - --log-level=DEBUG
+      - --hostname-debug=true
     volumes:
       - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
     ports:
       - "8080:8080"
+    networks:
+      - sprint08
     depends_on:
       - keycloak_db
+
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    networks:
+      - sprint08
     environment:
       REACT_APP_API_URL: http://localhost:8000
       REACT_APP_KEYCLOAK_URL: http://localhost:8080
       REACT_APP_KEYCLOAK_REALM: reports-realm
       REACT_APP_KEYCLOAK_CLIENT_ID: reports-frontend
+      
+networks:
+  sprint08:
+    name: sprint08-main

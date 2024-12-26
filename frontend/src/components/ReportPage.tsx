@@ -18,7 +18,8 @@ const ReportPage: React.FC = () => {
 
       const response = await fetch(`${process.env.REACT_APP_API_URL}/reports`, {
         headers: {
-          'Authorization': `Bearer ${keycloak.token}`
+          'Authorization': `Bearer ${keycloak.token}`,
+          'Content-Type': 'application/json'
         }
       });
 
@@ -60,6 +61,13 @@ const ReportPage: React.FC = () => {
           }`}
         >
           {loading ? 'Generating Report...' : 'Download Report'}
+        </button>
+
+        <button
+          onClick={() => keycloak.logout()}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Login
         </button>
 
         {error && (
